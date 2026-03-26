@@ -5,7 +5,7 @@
     driver: bridge
 
 - name: Pull Nginx Docker image
-  docker_image:
+  community.docker.docker_image:
     name: nginx
     tag: latest
     source: pull
@@ -21,7 +21,7 @@
     mode: '0644'
 
 - name: Run Nginx container
-  docker_container:
+  community.docker.docker_container:
     name: nginx
     image: nginx:latest
     state: started
@@ -35,7 +35,7 @@
     - run-nginx-container
 
 - name: Ensure Nginx container is running
-  docker_container:
+  community.docker.docker_container:
     name: nginx
     state: started
   tags:

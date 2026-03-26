@@ -2,7 +2,7 @@
 # Task file for webapp - Deploy containerized application with Docker
 
 - name: Pull Docker image
-  docker_image:
+  community.docker.docker_image:
     name: "{{ docker_image }}"
     tag: "{{ docker_image_tag }}"
     source: pull
@@ -35,7 +35,7 @@
     - template-index
 
 - name: Run Docker container for webapp
-  docker_container:
+  community.docker.docker_container:
     name: "{{ container_name }}"
     image: "{{ docker_image }}:{{ docker_image_tag }}"
     state: started
