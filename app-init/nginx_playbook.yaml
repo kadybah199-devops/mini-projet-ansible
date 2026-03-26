@@ -85,7 +85,7 @@
   handlers:
     - name: Check HTTP Service
       uri:
-        url: http://{{ ansible_default_ipv4.address }}
+        url: http://localhost
         status_code: 200 
 
 # Three dots indicate the end of a YAML document
