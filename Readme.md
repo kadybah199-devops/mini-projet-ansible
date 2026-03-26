@@ -642,6 +642,8 @@ ssh admin@10.0.37.5 "
 ssh admin@10.0.37.5 "
   pip3 install docker
 "
+sur CentOS
+sudo yum install -y python3 python3-pip
 ```
 
 #### **Phase 4 : Partie 2 (Docker + Rôles)**
@@ -654,6 +656,7 @@ cd ../app-template
 ansible -i hosts prod -m ping
 
 # 3. Valider la syntaxe
+ansible-galaxy collection install community.docker
 ansible-playbook --syntax-check -i hosts nginx_webapp_playbook.yaml
 
 # 4. Exécuter le playbook
