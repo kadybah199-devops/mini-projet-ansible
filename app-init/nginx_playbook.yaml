@@ -38,16 +38,15 @@
         name: nginx
         state: latest
 
+    - name: Wait for Nginx service to be available
+      pause:
+        seconds: 2
+
     - name: Start and enable Nginx service
-      service:
-        name: nginx
-        state: started
-        enabled: yes
+      shell: "systemctl enable nginx && systemctl start nginx"
 
     - name: Restart nginx
-      service:
-        name: nginx
-        state: restarted
+      shell: "systemctl restart nginx"
       notify: Check HTTP Service
 
     - name: Template index.html-easter_egg.j2 to index.html on target
