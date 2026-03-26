@@ -39,8 +39,9 @@
         state: latest
 
     - name: Kill any existing Nginx process
-      shell: "pkill -f nginx || true"
+      shell: "pkill -f nginx"
       ignore_errors: yes
+      changed_when: false
 
     - name: Wait for process to die
       pause:
