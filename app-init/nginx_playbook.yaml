@@ -38,21 +38,30 @@
         name: nginx
         state: latest
 
-    - name: Verify Nginx binary exists
-      stat:
-        path: /usr/sbin/nginx
-      register: nginx_binary
-
-    - name: Start Nginx directly
-      shell: "/usr/sbin/nginx"
-      when: nginx_binary.stat.exists
+    - name: Kill any existing Nginx process
+      shell: "pkill -f nginx || true"
       ignore_errors: yes
 
-    - name: Check Nginx is running
-      shell: "ps aux | grep nginx | grep -v grep"
-      register: nginx_running
+    - name: Wait for process to die
+      pause:
+        seconds: 1
+
+    - name: Start Nginx
+      shell: "nohup /usr/sbin/nginx > /dev/null 2>&1 &"
+      ignore_errors: yes
+
+    - name: Wait for Nginx to start
+      pause:
+        seconds: 2
+
+    - name: Verify Nginx is running
+      shell: "pgrep -f 'nginx: master' > /dev/null && echo 'Nginx running' || echo 'Nginx NOT running'"
+      register: nginx_status
       changed_when: false
-      ignore_errors: yes
+
+    - name: Display Nginx status
+      debug:
+        msg: "{{ nginx_status.stdout }}"
 
     - name: Template index.html-easter_egg.j2 to index.html on target
       template:
