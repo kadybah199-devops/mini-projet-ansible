@@ -1,0 +1,19 @@
+---
+# vars file for nginx
+# These are the variables that will always be used for this role
+
+# Docker configuration
+nginx_container_name: "nginx"
+nginx_docker_image: "nginx"
+nginx_docker_image_tag: "latest"
+
+# Networking
+nginx_docker_network: "custom_net"
+nginx_port: 80
+
+# Configuration files
+nginx_config_file: "/tmp/nginx.conf"
+nginx_config_dest: "/etc/nginx/nginx.conf"
+
+# Container restart policy
+nginx_restart_policy: "unless-stopped"

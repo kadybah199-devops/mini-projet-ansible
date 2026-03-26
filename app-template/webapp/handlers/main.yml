@@ -1,0 +1,14 @@
+---
+# handlers file for webapp
+
+- name: Restart webapp container
+  docker_container:
+    name: "{{ container_name }}"
+    state: restarted
+  listen: "restart webapp"
+
+- name: Check webapp service
+  uri:
+    url: "http://{{ ansible_default_ipv4.address }}:{{ app_port }}"
+    status_code: 200
+  listen: "check webapp"

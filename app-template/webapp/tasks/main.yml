@@ -1,0 +1,68 @@
+---
+# Task file for webapp - Deploy containerized application with Docker
+
+- name: Pull Docker image
+  docker_image:
+    name: "{{ docker_image }}"
+    tag: "{{ docker_image_tag }}"
+    source: pull
+  tags:
+    - pull-webapp-image
+
+- name: Create application directory
+  file:
+    path: "{{ app_dir }}"
+    state: directory
+    mode: '0755'
+  tags:
+    - create-app-dir
+
+- name: Copy application files
+  copy:
+    src: "files/"
+    dest: "{{ app_dir }}/"
+    mode: '0644'
+  when: app_files_dir is defined
+  tags:
+    - copy-app-files
+
+- name: Generate index.html from template
+  template:
+    src: "{{ template_index }}"
+    dest: "{{ app_dir }}/index.html"
+    mode: '0644'
+  tags:
+    - template-index
+
+- name: Run Docker container for webapp
+  docker_container:
+    name: "{{ container_name }}"
+    image: "{{ docker_image }}:{{ docker_image_tag }}"
+    state: started
+    restart_policy: unless-stopped
+    ports:
+      - "{{ app_port }}:80"
+    networks:
+      - name: "{{ docker_network }}"
+    volumes:
+      - "{{ app_dir }}/index.html:/usr/share/nginx/html/index.html:ro"
+    labels:
+      description: "Containerized webapp application"
+  tags:
+    - run-webapp-container
+
+- name: Ensure webapp container is running
+  docker_container:
+    name: "{{ container_name }}"
+    state: started
+  tags:
+    - ensure-webapp-running
+
+- name: Wait for webapp to be ready
+  wait_for:
+    host: localhost
+    port: "{{ app_port }}"
+    delay: 2
+    timeout: 30
+  tags:
+    - wait-webapp

@@ -1,0 +1,19 @@
+---
+# defaults file for webapp
+
+# Docker container configuration
+container_name: "webapp"
+app_port: 8080
+docker_network: "custom_net"
+
+# Application files and directories
+app_dir: "/app"
+app_files_dir: "files"
+
+# Docker image configuration
+docker_image: "nginx"
+docker_image_tag: "latest"
+
+# Templates configuration
+template_index: "index.html-base.j2"
+

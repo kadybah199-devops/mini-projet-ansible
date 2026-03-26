@@ -1,0 +1,11 @@
+all:
+  children:
+    prod:
+      hosts:
+        client1:
+          ansible_host: 10.0.37.5
+
+    staging:
+      hosts:
+        client2:
+          ansible_host: 10.0.37.6

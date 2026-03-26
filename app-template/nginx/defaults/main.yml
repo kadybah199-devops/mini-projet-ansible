@@ -1,0 +1,22 @@
+---
+# defaults file for nginx
+
+# Container configuration
+nginx_container_name: "nginx"
+nginx_docker_image: "nginx"
+nginx_docker_image_tag: "latest"
+
+# Network configuration
+nginx_docker_network: "custom_net"
+nginx_listen_port: 80
+
+# Upstream backend
+upstream_backend: "webapp_backend"
+upstream_servers:
+  - "webapp1:80"
+
+# Restart policy
+nginx_restart_policy: "unless-stopped"
+
+# Container state
+nginx_container_state: "started"
