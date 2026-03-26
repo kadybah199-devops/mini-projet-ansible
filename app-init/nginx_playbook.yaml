@@ -38,6 +38,12 @@
         name: nginx
         state: latest
 
+    - name: Start and enable Nginx service
+      service:
+        name: nginx
+        state: started
+        enabled: yes
+
     - name: Restart nginx
       service:
         name: nginx
