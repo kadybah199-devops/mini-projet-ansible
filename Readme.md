@@ -114,7 +114,7 @@ ssh admin@10.0.37.5 "
   sudo yum install -y docker
   sudo systemctl start docker
   sudo usermod -aG docker admin
-  pip3 install docker
+  sudo yum install python3-pip -y
 "
 ```
 
@@ -135,22 +135,19 @@ ssh admin@10.0.37.5 "
 # 1. Entrer dans le répertoire
 cd ../app-template
 
-# 2. Installer la collection Docker
-ansible-galaxy collection install community.docker
-
-# 3. Tester la connectivité
+# 2. Tester la connectivité
 ansible -i hosts prod -m ping
 
-# 4. Exécuter le playbook
+# 3. Exécuter le playbook
 ansible-playbook -i hosts nginx_webapp_playbook.yaml
 
-# 5. Vérifier les conteneurs
+# 4. Vérifier les conteneurs
 ansible -i hosts prod -m command -a "docker ps"
 
-# 6. Tester le proxy Nginx
+# 5. Tester le proxy Nginx
 curl http://10.0.37.5
 
-# 7. Tester la webapp directe
+# 6. Tester la webapp directe
 curl http://10.0.37.5:8082
 ```
 

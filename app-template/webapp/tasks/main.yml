@@ -2,10 +2,7 @@
 # Task file for webapp - Deploy containerized application with Docker
 
 - name: Pull Docker image
-  community.docker.docker_image:
-    name: "{{ docker_image }}"
-    tag: "{{ docker_image_tag }}"
-    source: pull
+  shell: "docker pull {{ docker_image }}:{{ docker_image_tag }}"
   tags:
     - pull-webapp-image
 
@@ -34,21 +31,22 @@
   tags:
     - template-index
 
-- name: Run Docker container for webapp
-  community.docker.docker_container:
-    name: "{{ container_name }}"
-    image: "{{ docker_image }}:{{ docker_image_tag }}"
-    state: started
-    restart_policy: unless-stopped
-    ports:
-      - "{{ app_port }}:80"
-    networks:
-      - name: "{{ docker_network }}"
-    volumes:
-      - "{{ app_dir }}/index.html:/usr/share/nginx/html/index.html:ro"
-    labels:
-      description: "Containerized webapp application"
+- name: Stop existing webapp container
+  shell: "docker stop {{ container_name }} || echo 'Container not running'"
+  changed_when: false
   tags:
+    - stop-webapp-container
+
+- name: Remove existing webapp container
+  shell: "docker rm {{ container_name }} || echo 'Container does not exist'"
+  changed_when: false
+  tags:
+    - remove-webapp-container
+
+- name: Run Docker container for webapp
+  shell: "docker run -d --name {{ container_name }} -p {{ app_port }}:80 --network {{ docker_network }} -v {{ app_dir }}/index.html:/usr/share/nginx/html/index.html:ro --restart unless-stopped {{ docker_image }}:{{ docker_image_tag }}"
+  tags:
+    - run-webapp-container
     - run-webapp-container
 
 - name: Ensure webapp container is running
