@@ -47,20 +47,13 @@
   shell: "docker run -d --name {{ container_name }} -p {{ app_port }}:80 --network {{ docker_network }} -v {{ app_dir }}/index.html:/usr/share/nginx/html/index.html:ro --restart unless-stopped {{ docker_image }}:{{ docker_image_tag }}"
   tags:
     - run-webapp-container
-    - run-webapp-container
-
-- name: Ensure webapp container is running
-  docker_container:
-    name: "{{ container_name }}"
-    state: started
-  tags:
-    - ensure-webapp-running
 
 - name: Wait for webapp to be ready
   wait_for:
     host: localhost
     port: "{{ app_port }}"
-    delay: 2
-    timeout: 30
+    delay: 3
+    timeout: 60
   tags:
+    - wait-webapp
     - wait-webapp

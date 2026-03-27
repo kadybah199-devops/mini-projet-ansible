@@ -128,7 +128,8 @@ ssh admin@10.0.37.5 "
   pip3 install docker
 "
 ```
-
+Harmoniser la version docker et python
+sudo pip3 install docker requests
 #### **Déployer avec Ansible**
 
 ```bash
