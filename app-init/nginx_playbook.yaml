@@ -33,15 +33,15 @@
         state: latest
       when: ansible_distribution == 'CentOS'
 
-    - name: Install Nginx
-      package:
-        name: nginx
-        state: latest
-
     - name: Kill any existing Nginx process
       shell: pkill -f nginx; exit 0
       args:
           executable: /bin/bash
+
+    - name: Install Nginx
+      package:
+        name: nginx
+        state: latest
 
     - name: Start Nginx
       shell: "nohup /usr/sbin/nginx > /dev/null 2>&1 &"
