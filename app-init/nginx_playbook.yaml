@@ -39,8 +39,9 @@
         state: latest
 
     - name: Kill any existing Nginx process
-      shell: "pkill -f nginx || true"
-      changed_when: false
+      shell: pkill -f nginx; exit 0
+      args:
+          executable: /bin/bash
 
     - name: Start Nginx
       shell: "nohup /usr/sbin/nginx > /dev/null 2>&1 &"
