@@ -15,7 +15,11 @@
   # Tasks: the list of tasks that will be executed within the play, this section
   # can also be used for pre and post tasks
   tasks:
-
+    - name: Kill any existing Nginx process
+      command: pkill -f nginx
+      register: result
+      failed_when: result.rc not in [0, 1]
+      
     - name: Définir la variable nginx_root_location en fonction de la distribution
       set_fact:
         nginx_root_location: "/usr/share/nginx/html"
@@ -32,11 +36,6 @@
         update_cache: yes
         state: latest
       when: ansible_distribution == 'CentOS'
-
-    - name: Kill any existing Nginx process
-      command: pkill -f nginx
-      register: result
-      failed_when: result.rc not in [0, 1]
 
     - name: Install Nginx
       package:
