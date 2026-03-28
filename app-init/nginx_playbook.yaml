@@ -34,9 +34,9 @@
       when: ansible_distribution == 'CentOS'
 
     - name: Kill any existing Nginx process
-      shell: pkill -f nginx; exit 0
-      args:
-          executable: /bin/bash
+      command: pkill -f nginx
+      register: result
+      failed_when: result.rc not in [0, 1]
 
     - name: Install Nginx
       package:
