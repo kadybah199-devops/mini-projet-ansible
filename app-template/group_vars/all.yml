@@ -2,5 +2,5 @@
 ansible_ssh_extra_args: '-o StrictHostKeyChecking=no'
 ansible_python_interpreter: "/usr/bin/python3"
 ansible_user: admin
-ansible_password: admin
+ansible_password: "{{ vault_password }}" 
 ansible_sudo_pass: admin

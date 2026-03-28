@@ -2,6 +2,8 @@
 # YAML documents begin with the document separator ---
 - hosts: prod
   become: true
+  vars_files: 
+    - vault.yml
   roles:
     # Le rôle Nginx doit être exécuté en premier
     - role: nginx
